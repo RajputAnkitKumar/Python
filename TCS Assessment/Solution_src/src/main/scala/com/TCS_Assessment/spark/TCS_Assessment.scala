@@ -1,9 +1,7 @@
 package com.TCS_Assessment.spark
 
 import org.apache.log4j._
-import org.apache.spark.ml.recommendation._
 import org.apache.spark.sql.{Row, SparkSession}
-import org.apache.spark.sql.types.{IntegerType, LongType, StringType, StructType}
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions._
 
@@ -11,11 +9,17 @@ import scala.collection.mutable
 
 object TCS_Assessment {
 
-  // Create a SparkSession
+ /** Our main function where the action happens */
+  def main(args: Array[String]) {
+
+ // Set the log level to only print errors
+ Logger.getLogger("org").setLevel(Level.ERROR)
+
+  // Use new SparkSession interface in Spark 2.0
   val spark = SparkSession.builder().appName("MatchingEngine").getOrCreate()
 
-  // Read the CSV file into a DataFrame
-  val input_file = "C:/Users/WINDOWS 10/Desktop/coding_excercise/exampleOrders.csv"
+  // Read the CSV file from Data folder present in Project
+  val input_file = "data/fakefriends.csv"
   val orders_df = spark.read.option("header", "false").option("inferSchema", "true").csv(input_file)
   val orders_df_renamed = orders_df.withColumnRenamed("_c0", "OrderID")
     .withColumnRenamed("_c1", "UserName")
@@ -62,4 +66,5 @@ object TCS_Assessment {
   // Stop the SparkSession
   spark.stop()
 
+  }
 }
